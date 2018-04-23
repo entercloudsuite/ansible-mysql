@@ -22,14 +22,16 @@ Run with default vars:
 - name: install percona mysql
   hosts: all
   pre_tasks:
+    - name: install curl
+      package: name=curl
     - name: install percona mysql repo
-      shell: wget https://repo.percona.com/apt/percona-release_0.1-4.$(lsb_release -sc)_all.deb && dpkg -i percona-release_0.1-4.$(lsb_release -sc)_all.deb
+      shell: curl -O https://repo.percona.com/apt/percona-release_0.1-4.$(lsb_release -sc)_all.deb && dpkg -i percona-release_0.1-4.$(lsb_release -sc)_all.deb
       args:
         creates: /etc/apt/sources.list.d/percona-release.list
         executable: /bin/bash
         chdir: /tmp
   roles:
-    - role: entercloudsuite.mysql
+    - role: ansible-mysql
       mysql_packages:
         - percona-server-server-5.7
 ```

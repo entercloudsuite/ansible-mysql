@@ -15,4 +15,3 @@ galaxy_info:
 dependencies:
   - {role: geerlingguy.mysql, version: 2.8.3}
   # List your role dependencies here, one per line.
-

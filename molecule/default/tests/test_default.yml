@@ -1,7 +1,4 @@
 ---
-package:
-  mysql:
-    installed: true
 port:
   tcp:3306:
     listening: true
@@ -20,5 +17,5 @@ group:
   mysql:
     exists: true
 process:
-  mysql:
+  mysqld:
     running: true
