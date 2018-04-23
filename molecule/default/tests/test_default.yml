@@ -1,0 +1,24 @@
+---
+package:
+  mysql:
+    installed: true
+port:
+  tcp:3306:
+    listening: true
+    ip:
+      - 0.0.0.0
+service:
+  mysql:
+    enabled: true
+    running: true
+user:
+  mysql:
+    exists: true
+    groups:
+      - mysql
+group:
+  mysql:
+    exists: true
+process:
+  mysql:
+    running: true

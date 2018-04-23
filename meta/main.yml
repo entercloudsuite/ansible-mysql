@@ -1,0 +1,18 @@
+---
+galaxy_info:
+  author: Jacopo Secchiero
+  description: Playbook for mysql.
+  company: Enter srl
+  license: MIT
+  min_ansible_version: 2.4
+  platforms:
+    - name: Ubuntu
+      versions:
+        - xenial
+  galaxy_tags:
+    - molecule
+
+dependencies:
+  - {role: geerlingguy.mysql, version: 2.8.3}
+  # List your role dependencies here, one per line.
+
