@@ -19,19 +19,19 @@ The role defines most of its variables in `defaults/main.yml`:
 Run with default vars:
 
 ```
-  - name: install percona mysql
-    hosts: all
-    pre_tasks:
-      - name: install percona mysql repo
-        shell: wget https://repo.percona.com/apt/percona-release_0.1-4.$(lsb_release -sc)_all.deb && dpkg -i percona-release_0.1-4.$(lsb_release -sc)_all.deb
-        args:
-          creates: /etc/apt/sources.list.d/percona-release.list
-          executable: /bin/bash
-          chdir: /tmp
-    roles:
-      - role: geerlingguy.mysql
-        mysql_packages:
-          - percona-server-server-5.7
+- name: install percona mysql
+  hosts: all
+  pre_tasks:
+    - name: install percona mysql repo
+      shell: wget https://repo.percona.com/apt/percona-release_0.1-4.$(lsb_release -sc)_all.deb && dpkg -i percona-release_0.1-4.$(lsb_release -sc)_all.deb
+      args:
+        creates: /etc/apt/sources.list.d/percona-release.list
+        executable: /bin/bash
+        chdir: /tmp
+  roles:
+    - role: entercloudsuite.mysql
+      mysql_packages:
+        - percona-server-server-5.7
 ```
 
 
