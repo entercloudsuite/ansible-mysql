@@ -31,7 +31,7 @@ Run with default vars:
         executable: /bin/bash
         chdir: /tmp
   roles:
-    - role: ansible-mysql
+    - role: entercloudsuite.mysql
       mysql_packages:
         - percona-server-server-5.7
 ```
