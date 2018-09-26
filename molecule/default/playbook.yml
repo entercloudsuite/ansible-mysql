@@ -13,5 +13,11 @@
         chdir: /tmp
   roles:
     - role: ansible-mysql
+      mysql_root_username: root
+      mysql_root_password: root
+      mysql_root_password_update: yes
       mysql_packages:
         - percona-server-server-5.7
+        - percona-xtrabackup-24
+      mysql_config_include_files:
+        - src: custom.cnf
