@@ -14,6 +14,11 @@
         creates: /etc/apt/sources.list.d/percona-release.list
         executable: /bin/bash
         chdir: /tmp
+    - name: add custom mysql config file
+      copy:
+      dest: custom.cnf
+      content: |
+        [mysqld]
   roles:
     - role: ansible-mysql
       mysql_root_username: root
