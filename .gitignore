@@ -10,3 +10,5 @@ ansible-role-*
 *.pem
 *.pem.pub
 *.swp
+.tox
+custom.cnf
