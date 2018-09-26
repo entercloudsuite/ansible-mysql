@@ -6,8 +6,11 @@
   become_user: root
   hosts: all
   pre_tasks:
-    - name: install curl
-      package: name=curl
+    - name: install prerequisite
+      package: name="{{ item }}"
+      with_items:
+        - curl
+        - lsb-release
     - name: install percona mysql repo
       shell: curl -O https://repo.percona.com/apt/percona-release_0.1-4.$(lsb_release -sc)_all.deb && dpkg -i percona-release_0.1-4.$(lsb_release -sc)_all.deb
       args:
@@ -15,10 +18,11 @@
         executable: /bin/bash
         chdir: /tmp
     - name: add custom mysql config file
-      copy:
-      dest: custom.cnf
-      content: |
-        [mysqld]
+      local_action:
+        module: copy
+        dest: custom.cnf
+        content: |
+          [mysqld]
   roles:
     - role: ansible-mysql
       mysql_root_username: root
