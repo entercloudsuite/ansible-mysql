@@ -38,6 +38,7 @@
     - role: entercloudsuite.consul-template
       consul_template_version: 0.19.5
       consul_template_use_systemd: true
+      consul_template_staging_area: /opt
     - role: entercloudsuite.haproxy
       haproxy_user: admin
       haproxy_pass: admin
