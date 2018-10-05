@@ -1,35 +1,10 @@
 ---
 
-- name: install percona mysql
+- name: deploy packer image
   become: true
   become_method: sudo
   become_user: root
   hosts: all
-  pre_tasks:
+  tasks:
     - name: install prerequisite
-      package: name="{{ item }}"
-      with_items:
-        - curl
-        - lsb-release
-    - name: install percona mysql repo
-      shell: curl -O https://repo.percona.com/apt/percona-release_0.1-4.$(lsb_release -sc)_all.deb && dpkg -i percona-release_0.1-4.$(lsb_release -sc)_all.deb
-      args:
-        creates: /etc/apt/sources.list.d/percona-release.list
-        executable: /bin/bash
-        chdir: /tmp
-    - name: add custom mysql config file
-      local_action:
-        module: copy
-        dest: custom.cnf
-        content: |
-          [mysqld]
-  roles:
-    - role: ansible-mysql
-      mysql_root_username: root
-      mysql_root_password: root
-      mysql_root_password_update: yes
-      mysql_packages:
-        - percona-server-server-5.7
-        - percona-xtrabackup-24
-      mysql_config_include_files:
-        - src: custom.cnf
+      import_playbook: playbook.yml
