@@ -43,7 +43,7 @@
           [mysqld]
   roles:
     - role: entercloudsuite.consul
-      consul_version: 1.2.2
+      consul_version: 1.2.3
       consul_packer_provision: true
       consul_configs:
         main:
