@@ -1,6 +1,6 @@
 ---
 
-- name: deploy packer image
+- name: install requirements
   become: true
   become_method: sudo
   become_user: root
@@ -42,7 +42,7 @@
     - role: entercloudsuite.consul-template
       consul_template_version: 0.19.5
       consul_template_use_systemd: true
-      consul_template_staging_area: /opt
+      consul_template_staging_area: /var/spool
     - role: entercloudsuite.haproxy
       haproxy_user: admin
       haproxy_pass: admin
