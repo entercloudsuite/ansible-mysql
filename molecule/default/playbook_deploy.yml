@@ -9,4 +9,4 @@
   hosts: all
 
 - name: perepare packer image
-  import_playbook: main.yml
+  import_playbook: playbook.yml

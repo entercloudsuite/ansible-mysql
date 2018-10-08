@@ -20,6 +20,23 @@
         - sudo
         - python-apt
         - software-properties-common
+    - name: install mysql prerequisite
+      package: name="{{ item }}"
+      with_items:
+        - curl
+        - lsb-release
+    - name: install percona mysql repo
+      shell: curl -O https://repo.percona.com/apt/percona-release_0.1-4.$(lsb_release -sc)_all.deb && dpkg -i percona-release_0.1-4.$(lsb_release -sc)_all.deb
+      args:
+        creates: /etc/apt/sources.list.d/percona-release.list
+        executable: /bin/bash
+        chdir: /tmp
+    - name: add custom mysql config file
+      local_action:
+        module: copy
+        dest: custom.cnf
+        content: |
+          [mysqld]
   roles:
     - role: entercloudsuite.consul
       consul_version: 1.2.2
@@ -53,28 +70,6 @@
     - role: entercloudsuite.pmm_client
       pmm_client_version: 1.14.1
       pmm_client_enabled: False
-
-- name: install percona mysql
-  hosts: all
-  pre_tasks:
-    - name: install prerequisite
-      package: name="{{ item }}"
-      with_items:
-        - curl
-        - lsb-release
-    - name: install percona mysql repo
-      shell: curl -O https://repo.percona.com/apt/percona-release_0.1-4.$(lsb_release -sc)_all.deb && dpkg -i percona-release_0.1-4.$(lsb_release -sc)_all.deb
-      args:
-        creates: /etc/apt/sources.list.d/percona-release.list
-        executable: /bin/bash
-        chdir: /tmp
-    - name: add custom mysql config file
-      local_action:
-        module: copy
-        dest: custom.cnf
-        content: |
-          [mysqld]
-  roles:
     - role: ansible-mysql
       mysql_root_username: root
       mysql_root_password: root
