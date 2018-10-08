@@ -1,13 +1,10 @@
 ---
 
-
-- name: define authentication method
+- name: install requirements
   become: true
   become_method: sudo
   become_user: root
   remote_user: ubuntu
-  hosts: all
-  name: install requirements
   hosts: all
   pre_tasks:
     - name: update repositories cache
