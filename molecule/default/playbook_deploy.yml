@@ -1,90 +1,12 @@
 ---
 
-- name: install requirements
+
+- name: define authentication method
   become: true
   become_method: sudo
   become_user: root
   remote_user: ubuntu
   hosts: all
-  pre_tasks:
-    - name: update repositories cache
-      apt:
-        update_cache: yes
-    - package: name={{ item }} state=latest
-      with_items:
-        - thin-provisioning-tools
-        - mylvmbackup
-        - jq
-        - libfile-copy-recursive-perl
-        - xinetd
-        - sudo
-        - iproute
-        - rsyslog
-        - ca-certificates
-        - sudo
-        - python-apt
-        - software-properties-common
-  roles:
-    - role: entercloudsuite.consul
-      consul_version: 1.2.2
-      consul_packer_provision: true
-      consul_configs:
-        main:
-          bind_addr: 0.0.0.0
-          client_addr: 0.0.0.0
-          node_name: "{{ ansible_hostname }}"
-          data_dir: "{{ consul_data_dir }}"
-          encrypt: "K8n07GA/ZoANSmJ5zkvgOg=="
-          enable_syslog: true
-          datacenter: automium
-          server: true
-          ui: true
-    - role: entercloudsuite.consul-template
-      consul_template_version: 0.19.5
-      consul_template_use_systemd: true
-      consul_template_staging_area: /var/spool
-    - role: entercloudsuite.haproxy
-      haproxy_user: admin
-      haproxy_pass: admin
-    - role: entercloudsuite.backup
-      restic_version: 0.9.2
-      os_api: dummy_api
-      os_region: dummy_region
-      os_project_id: dummy_project_id
-      os_project: dummy_project
-      os_user: dummy_user
-      os_password: dummy_password
-    - role: entercloudsuite.pmm_client
-      pmm_client_version: 1.14.1
-      pmm_client_enabled: False
 
-- name: install percona mysql
-  hosts: all
-  pre_tasks:
-    - name: install prerequisite
-      package: name="{{ item }}"
-      with_items:
-        - curl
-        - lsb-release
-    - name: install percona mysql repo
-      shell: curl -O https://repo.percona.com/apt/percona-release_0.1-4.$(lsb_release -sc)_all.deb && dpkg -i percona-release_0.1-4.$(lsb_release -sc)_all.deb
-      args:
-        creates: /etc/apt/sources.list.d/percona-release.list
-        executable: /bin/bash
-        chdir: /tmp
-    - name: add custom mysql config file
-      local_action:
-        module: copy
-        dest: custom.cnf
-        content: |
-          [mysqld]
-  roles:
-    - role: ansible-mysql
-      mysql_root_username: root
-      mysql_root_password: root
-      mysql_root_password_update: yes
-      mysql_packages:
-        - percona-server-server-5.7
-        - percona-xtrabackup-24
-      mysql_config_include_files:
-        - src: custom.cnf
+- name: perepare packer image
+  import_playbook: main.yml
