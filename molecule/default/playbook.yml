@@ -79,6 +79,12 @@
         - percona-xtrabackup-24
       mysql_config_include_files:
         - src: custom.cnf
+  post_tasks:
+    - name: download restic https://github.com/restic/restic/pull/1719#pullrequestreview-119247068
+      get_url:
+        url: https://swift.it-mil1.entercloudsuite.com/v1/KEY_d51f5387474f40c6bd2975ccf34c7ea0/resticbin/restic
+        dest: "/usr/local/bin/restic"
+        mode: 0540
 
 - name: prepare virtualenv
   hosts: all
