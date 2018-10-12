@@ -27,7 +27,9 @@ before_deploy:
 
 deploy:
   - provider: script
-    script: ./packer build packer.json
+    travis_wait: 30
+    script:
+      - ./packer build packer.json
     skip_cleanup: true
     on:
       all_branches: true
