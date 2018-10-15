@@ -13,7 +13,6 @@
         - jq
         - libfile-copy-recursive-perl
         - xinetd
-        - sudo
         - iproute
         - rsyslog
         - ca-certificates
@@ -37,6 +36,17 @@
         dest: custom.cnf
         content: |
           [mysqld]
+    - name: create folder for override mysql default systemd defaults
+      file: path=/etc/systemd/system/mysql.service.d state=directory
+    - name: increase Limits for mysql
+      copy:
+        dest: /etc/systemd/system/mysql.service.d/override.conf
+        content: |
+          [Service]
+          LimitAS=infinity
+          LimitRSS=infinity
+          LimitCORE=infinity
+          LimitNOFILE=65536
   roles:
     - role: entercloudsuite.consul
       consul_version: 1.2.2
@@ -79,6 +89,20 @@
         - percona-xtrabackup-24
       mysql_config_include_files:
         - src: custom.cnf
+    - role: entercloudsuite.prometheus-exporter
+      prometheus_enable_exporter_config_flags: true
+      prometheus_exporter_name: haproxy_exporter
+      prometheus_exporter_version: 0.9.0
+      prometheus_exporter_config_flags:
+        '--haproxy.scrape-uri': 'unix:/run/haproxy/admin.sock'
+    - role: entercloudsuite.prometheus-exporter
+      prometheus_exporter_name: node_exporter
+      prometheus_exporter_version: 0.16.0
+    - role: entercloudsuite.prometheus-exporter
+      prometheus_exporter_name: mysqld_exporter
+      prometheus_exporter_version: 0.11.0
+      prometheus_environment_variables:
+        'DATA_SOURCE_NAME': 'root:root@(127.0.0.1:33306)/'
   post_tasks:
     - name: download restic https://github.com/restic/restic/pull/1719#pullrequestreview-119247068
       get_url:
@@ -86,6 +110,11 @@
         dest: "/usr/local/bin/restic"
         mode: 0540
         force: yes
+    - name: add prometheus user to haproxy group
+      user:
+        name: prometheus
+        groups: haproxy
+        append: yes
 
 - name: prepare virtualenv
   hosts: all
