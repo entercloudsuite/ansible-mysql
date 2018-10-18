@@ -87,6 +87,7 @@
       mysql_packages:
         - percona-server-server-5.7
         - percona-xtrabackup-24
+        - percona-toolkit
       mysql_config_include_files:
         - src: custom.cnf
     - role: entercloudsuite.prometheus-exporter
