@@ -8,6 +8,7 @@
 		"password": "{{user `ecs_password`}}",
 		"region": "{{user `ecs_region`}}",
 		"image_name": "{{user `image_name`}}",
+		"instance_name": "{{user `instance_name`}}",
 		"source_image": "6a1e4c2b-d663-492a-a828-205f4b28d9e0",
 		"ssh_username": "ubuntu",
 		"flavor": "{{user `ecs_flavor`}}",
@@ -32,6 +33,7 @@
     ],
     "variables": {
 		"image_name": "ecs-mysql {{env `TRAVIS_BRANCH`}}",
+    "instance_name": "ecs-mysql",
         "ecs_flavor":  "e3standard.x2",
 		"ecs_region":  "nl-ams1",
 
