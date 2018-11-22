@@ -103,7 +103,7 @@
       prometheus_exporter_name: mysqld_exporter
       prometheus_exporter_version: 0.11.0
       prometheus_environment_variables:
-        'DATA_SOURCE_NAME': 'root:root@(127.0.0.1:33306)/'
+        'DATA_SOURCE_NAME': 'prometheus:prometheus@(127.0.0.1:33306)/'
   post_tasks:
     - name: download restic https://github.com/restic/restic/pull/1719#pullrequestreview-119247068
       get_url:
