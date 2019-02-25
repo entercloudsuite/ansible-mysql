@@ -24,12 +24,23 @@ before_deploy:
   - ansible-galaxy install --force --roles-path . -r ./molecule/default/requirements.yml
   - wget -O packer.zip https://releases.hashicorp.com/packer/1.3.1/packer_1.3.1_linux_amd64.zip
   - unzip -o packer.zip
+  - sudo apt-get update
+  - sudo apt-get install qemu-utils -y
+  - pip install --upgrade pip
+  - pip install python-swiftclient==3.6.0 python-openstackclient==3.17.0
+  - |
+      function keep_alive() {
+        while true; do
+          echo -en "\a"
+          sleep 5
+        done
+      }
+      keep_alive &
 
 deploy:
   - provider: script
     travis_wait: 30
-    script:
-      - ./packer build packer.json
+    script: bash deploy.sh
     skip_cleanup: true
     on:
       all_branches: true
